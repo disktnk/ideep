@@ -150,7 +150,8 @@ void mdarray::axpby(mdarray *dst, T a, mdarray *x, T b, mdarray *y) {
   auto mid = reorder_if_must(y->m_, x->m_.get_primitive_desc()
       , mreorder, &prims);
 
-  mkldnn::sum::primitive_desc sum_pd({a, b}
+  std::vector<T> vec = {a, b};
+  mkldnn::sum::primitive_desc sum_pd(vec
       , {x->m_.get_primitive_desc(), mid.get_primitive_desc()});
 
   std::vector<mkldnn::memory::primitive::at> inputs_at {x->m_, mid};
